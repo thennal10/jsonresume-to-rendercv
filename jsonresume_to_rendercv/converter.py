@@ -98,7 +98,7 @@ class JSONResumeConverter:
                 "degree": edu["studyType"],
                 "start_date": edu["startDate"],
                 "end_date": edu.get("endDate", "present"),
-                "highlights": edu.get("courses", []),
+                "location": edu.get("location", ""),
             }
             for edu in education
         ]
