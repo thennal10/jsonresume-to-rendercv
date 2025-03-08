@@ -118,6 +118,7 @@ class JSONResumeConverter:
                 "title": pub["name"],
                 "authors": pub.get("authors", []),
                 "date": pub["releaseDate"],
+                "journal": pub.get("publisher", ""),
             }
 
             for optional_field in optional_fields:
