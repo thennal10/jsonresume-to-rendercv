@@ -37,8 +37,8 @@ class JSONResumeConverter:
             "cv": {
                 "name": basics["name"],
                 "location": self.format_location(basics.get("location")),
-                "email": basics["email"],
-                "phone": basics["phone"],
+                "email": basics.get("email"),
+                "phone": basics.get("phone"),
                 "website": basics.get("url", ""),
                 "social_networks": self.format_social_networks(
                     basics.get("profiles", [])
@@ -48,7 +48,7 @@ class JSONResumeConverter:
         }
 
         sections = {
-            "summary": [basics.get("summary", "")],
+            "summary": basics.get("summary", ""),
             "education": self.format_education(json_resume.get("education", [])),
             "experience": self.format_experience(json_resume.get("work", [])),
             "publications": self.format_publications(
@@ -63,6 +63,11 @@ class JSONResumeConverter:
         for key, section in sections.items():
             if len(section) > 0:
                 self.render_cv["cv"]["sections"][key] = section
+                
+        # Remove empty fields
+        self.render_cv["cv"] = {
+            k: v for k, v in self.render_cv["cv"].items() if v
+        }
 
     def format_location(self, location):
         if location:
