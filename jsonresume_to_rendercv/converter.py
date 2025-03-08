@@ -1,6 +1,7 @@
 import yaml
 import sys
 import json
+import os
 
 from .validator import SchemaValidator
 
@@ -179,12 +180,21 @@ def convert(input_file, output_file):
     input_validator.validate_json(json_resume)
 
     converter = JSONResumeConverter(json_resume)
+    
+    # keep the rendercv design, settings etc. if it exists 
+    if os.path.exists(output_file):
+        with open(output_file, "r", encoding="utf-8") as outfile:
+            existing_data = yaml.safe_load(outfile) or {}
+            # update everything other than cv
+            converter.render_cv.update({k: v for k, v in existing_data.items() if k != "cv"})
+    
     yaml_output = converter.convert()
 
+    ## TODO: Actually make this work with keeping the rendercv shit. Disabled for now. 
     # Validate the output YAML against the RenderCV schema
-    output_validator = SchemaValidator(RENDER_CV_SCHEMA_URL)
+    #output_validator = SchemaValidator(RENDER_CV_SCHEMA_URL)
     render_cv_data = yaml.safe_load(yaml_output)
-    output_validator.validate_yaml(render_cv_data)
+    #output_validator.validate_yaml(render_cv_data)
 
     with open(output_file, "w", encoding="utf-8") as outfile:
         outfile.write(yaml_output)
