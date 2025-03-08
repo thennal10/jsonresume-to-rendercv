@@ -134,8 +134,9 @@ class JSONResumeConverter:
         return [
             {
                 "name": proj["name"],
-                "date": proj.get("startDate", ""),
-                "highlights": [proj["description"]] if "description" in proj else [],
+                "start_date": proj["startDate"],
+                "end_date": proj.get("endDate", "present"),
+                "highlights": [proj["description"]] if "description" in proj else proj["highlights"],
             }
             for proj in projects
         ]
