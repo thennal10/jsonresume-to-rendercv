@@ -145,14 +145,18 @@ class JSONResumeConverter:
 
     def format_technologies(self, skills):
         languages = next(
-            (skill["keywords"] for skill in skills if skill["name"] == "Languages"), []
+            (skill["keywords"] for skill in skills if skill["name"] == "Programming Languages"), []
         )
-        software = next(
-            (skill["keywords"] for skill in skills if skill["name"] == "Software"), []
+        frameworks = next(
+            (skill["keywords"] for skill in skills if skill["name"] == "Frameworks"), []
+        )
+        misc = next(
+            (skill["keywords"] for skill in skills if skill["name"] == "Miscellaneous"), []
         )
         return [
             {"label": "Languages", "details": ", ".join(languages)},
-            {"label": "Software", "details": ", ".join(software)},
+            {"label": "Software", "details": ", ".join(frameworks)},
+            {"label": "Miscellaneous", "details": ", ".join(misc)},
         ]
 
     def convert(self):
